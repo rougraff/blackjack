@@ -175,7 +175,11 @@ if not st.session_state.player_turn:
         with col1:
             if st.button("Hit"):
                 game.player.add_card(game.deck.deal_card())
-                st.experimental_rerun()
+                # Ensure state is valid before rerunning
+                if "game" in st.session_state and st.session_state.game:
+                    st.experimental_rerun()
+                else:
+                    st.error("Game state is invalid. Please restart the game.")
 
         with col2:
             if st.button("Stand"):
@@ -188,7 +192,11 @@ if not st.session_state.player_turn:
                         st.session_state.split_hand = [game.player.cards.pop()]
                         game.player.add_card(game.deck.deal_card())
                         st.session_state.split_bet = st.session_state.bet
-                        st.experimental_rerun()
+                        # Ensure state is valid before rerunning
+                        if "game" in st.session_state and st.session_state.game:
+                            st.experimental_rerun()
+                        else:
+                            st.error("Game state is invalid. Please restart the game.")
                 else:
                     st.warning("Insufficient funds to split this turn.")
 
@@ -198,7 +206,11 @@ if not st.session_state.player_turn:
                     st.session_state.bet *= 2
                     game.player.add_card(game.deck.deal_card())
                     st.session_state.game_over = True
-                    st.experimental_rerun()
+                    # Ensure state is valid before rerunning
+                    if "game" in st.session_state and st.session_state.game:
+                        st.experimental_rerun()
+                    else:
+                        st.error("Game state is invalid. Please restart the game.")
             else:
                 st.write("Insufficient funds to double down this turn.")
 
